@@ -29,3 +29,40 @@ const data = [
         ],
     },
 ];
+
+const gameScreen = document.querySelector(".game");
+const resultScreen = document.querySelector(".result");
+const question = document.querySelector(".question");
+const answersContainer = document.querySelector(".answers");
+const submit = document.querySelector(".submit");
+const play = document.querySelector(".play");
+
+let questionIndex = 0;
+let correctCount = 0;
+let wrongCount = 0;
+let total = 0;
+let selectedAnswer;
+
+const showQuestion = (questionNumber) => {
+    question.textContent = data[questionNumber].question;
+    answersContainer.innerHTML = data[questionNumber].answers.map((item, index) =>
+        `
+        <div class="answer">
+        <input name="answer" type="radio" id=${index} value=${item.isCorrect}>
+        <label for=${index}>${item.answer}</label>
+        </div>
+        `
+    ).join("");     //join emty string makes backtics invisible.without displays ` between radios
+
+    selectAnswer()
+};
+
+const selectAnswer = () => {
+    answersContainer.querySelectorAll("input").forEach(element => {
+        element.addEventListener("click", (e) => {
+            selectedAnswer = e.target.value;
+        });
+    });
+};
+
+showQuestion(questionIndex);
