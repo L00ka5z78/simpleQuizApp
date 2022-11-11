@@ -1,4 +1,4 @@
-const data = [
+const data = [                                                      //example data used in app just to show functionality
     {
         id: 1,
         question: "Which of these fish is actually a fish?",
@@ -43,16 +43,47 @@ let wrongCount = 0;
 let total = 0;
 let selectedAnswer;
 
+const playAgain = () => {                                                                 //function which restarts game
+    questionIndex = 0;
+    correctCount = 0;
+    wrongCount = 0;
+    total = 0;
+    showQuestion(questionIndex);
+};
+
+play.addEventListener("click", () => {
+    resultScreen.style.display = "none"                                                   // closing resultscreen container and opening game
+    gameScreen.style.display = "block"
+    playAgain();
+})
+
+const showResult = () => {
+    resultScreen.style.display = "block"                                                 // closing gameScreen container and opening and displaying results
+    gameScreen.style.display = "none"
+
+    resultScreen.querySelector(".correct").textContent =
+        `Correct answers: ${correctCount}`
+
+    resultScreen.querySelector(".wrong").textContent =
+        `Wrong answers: ${wrongCount}`
+
+    resultScreen.querySelector(".score").textContent =
+        `Score: ${(correctCount - wrongCount) * 10}`
+}
+
 const showQuestion = (questionNumber) => {
+    if (questionIndex === data.length) return showResult();
+
+    selectedAnswer = null;
     question.textContent = data[questionNumber].question;
-    answersContainer.innerHTML = data[questionNumber].answers.map((item, index) =>
+    answersContainer.innerHTML = data[questionNumber].answers.map((item, index) =>      //injection of html into. Tis is not a function no {} after arrow
         `
         <div class="answer">
         <input name="answer" type="radio" id=${index} value=${item.isCorrect}>
         <label for=${index}>${item.answer}</label>
         </div>
         `
-    ).join("");     //join emty string makes backtics invisible.without displays ` between radios
+    ).join("");                                                                         //join emty string makes backtics invisible.without displays ` between radios
 
     selectAnswer()
 };
@@ -65,4 +96,15 @@ const selectAnswer = () => {
     });
 };
 
+const submitAnswer = () => {
+    submit.addEventListener("click", () => {
+        if (selectedAnswer !== null) {
+            selectedAnswer === "true" ? correctCount++ : wrongCount++;
+            questionIndex++;
+            showQuestion(questionIndex);
+        } else alert("Select a question")
+    });
+};
+
 showQuestion(questionIndex);
+submitAnswer();

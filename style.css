@@ -16,9 +16,9 @@ body {
   background-color: white;
 }
 
-.game {
-  /* display: none; */
-}
+/* .game {                          using during creating screens
+  display: none;
+} */
 
 .content {
   padding: 50px;
